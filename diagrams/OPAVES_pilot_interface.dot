@@ -1,0 +1,29 @@
+digraph {
+    bgcolor=transparent
+    layout=neato
+    size="100,100"
+
+    node        [shape=box, style="rounded,filled", width=5, height=0.5]
+
+    pilot       [color="lightskyblue", pos="0,0.7!",    label="Insert your auto-pilot here"];
+    coms        [color="indianred",    pos="0,-0.7!",   label="Communication"];
+
+    // Hidden nodes
+    node    [shape=plaintext, style="", label=""];
+
+    hidden1 [pos="-2,-0.7!"];
+    hidden2 [pos="-2,0.7!"];
+    hidden3 [pos="-1,-0.7!"];
+    hidden4 [pos="-1,0.7!"];
+    hidden5 [pos="0,-0.7!"];
+    hidden6 [pos="0,0.7!"];
+    hidden7 [pos="2,0.7!"];
+    hidden8 [pos="2,-0.7!"];
+
+    edge [color=black]
+
+    hidden1 -> hidden2 [taillabel="Sensor\nData"];
+    hidden3 -> hidden4 [taillabel="Vehicle\nSatus"];
+    hidden5 -> hidden6 [taillabel="SLAM?"];
+    hidden7 -> hidden8 [taillabel="Pilot\nCommands"];
+}

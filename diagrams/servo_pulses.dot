@@ -1,0 +1,115 @@
+digraph {
+    bgcolor=transparent
+    layout=neato
+    // A -> Max pulse
+    // B -> Nutral pulse
+    // C -> Min pulse
+
+
+    //  The signals modes
+    node [label="", shape=plaintext, width=0.001, height=0.001, style=""];
+
+    A0 [pos="-0.5,0!"]
+    A1 [pos="0,0!"]
+    A2 [pos="0,1!"]
+    A3 [pos="1.5,1!"]
+    A4 [pos="1.5,0!"]
+    A5 [pos="3,0!"]
+    A6 [pos="3,1!"]
+    A7 [pos="4.5,1!"]
+    A8 [pos="4.5,0!"]
+    A9 [pos="5,0!"]
+
+    B0 [pos="-0.5,1.5!"]
+    B1 [pos="0,1.5!"]
+    B2 [pos="0,2.5!"]
+    B3 [pos="1,2.5!"]
+    B4 [pos="1,1.5!"]
+    B5 [pos="3,1.5!"]
+    B6 [pos="3,2.5!"]
+    B7 [pos="4,2.5!"]
+    B8 [pos="4,1.5!"]
+    B9 [pos="5,1.5!"]
+
+    C0 [pos="-0.5,3!"]
+    C1 [pos="0,3!"]
+    C2 [pos="0,4!"]
+    C3 [pos="0.5,4!"]
+    C4 [pos="0.5,3!"]
+    C5 [pos="3,3!"]
+    C6 [pos="3,4!"]
+    C7 [pos="3.5,4!"]
+    C8 [pos="3.5,3!"]
+    C9 [pos="5,3!"]
+
+    // Cropping workaround. Some of the texts and lines are cropped, so I ass
+    // two hidden node that will expend the corners of the drawing.
+    Hidden1 [pos="7.5,0!"]
+    Hidden2 [pos="0,5!"]
+
+    // Signal lenght labels
+    A_lab [label="2.5 ms", pos="0.4,-0.2!"]
+    B_lab [label="1.5 ms", pos="0.4,1.3!"]
+    C_lab [label="1.0 ms", pos="0.4,2.8!"]
+
+    //  The circles points
+    node [label="", shape=plaintext, width=0.001, height=0.001, style=""];
+
+    A_Center [pos="6,0.5!"]
+    B_Center [pos="6,2!"]
+    C_Center [pos="6,3.5!"]
+
+    A_End [pos="6.5,0.5!", xlabel="+90 &deg;"] // +90 degrees
+    B_End [pos="6,2.5!",   xlabel="0 &deg;"]   //   0 degrees
+    C_End [pos="5.5,3.5!", xlabel="-90 &deg;"] // -90 degrees
+
+    // The circles
+    node [label="", shape=circle, width=1, height=1, style=""];
+    A_Circle [pos="6,0.5!"]
+    B_Circle [pos="6,2!"]
+    C_Circle [pos="6,3.5!"]
+
+    // The circles arrows
+    edge [color=black]
+    A_Center -> A_End
+    B_Center -> B_End
+    C_Center -> C_End
+
+    // The signals arrows
+    edge [color=black, dir=both, labelfloat=true]
+    A1 -> A4
+    B1 -> B4
+    C1 -> C4
+
+    // The signals lines
+    edge [color=black, dir=none]
+    A0 -> A1
+    A1 -> A2
+    A2 -> A3
+    A3 -> A4
+    A4 -> A5
+    A5 -> A6
+    A6 -> A7
+    A7 -> A8
+    A8 -> A9
+
+    B0 -> B1
+    B1 -> B2
+    B2 -> B3
+    B3 -> B4
+    B4 -> B5
+    B5 -> B6
+    B6 -> B7
+    B7 -> B8
+    B8 -> B9
+
+    C0 -> C1
+    C1 -> C2
+    C2 -> C3
+    C3 -> C4
+    C4 -> C5
+    C5 -> C6
+    C6 -> C7
+    C7 -> C8
+    C8 -> C9
+}

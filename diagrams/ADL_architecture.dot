@@ -1,0 +1,16 @@
+digraph {
+    bgcolor=transparent
+    layout=neato
+
+    node  [shape=box, style="rounded,filled", width=4.8, height=0.4]
+
+    hw    [color="grey50",       pos="-0.6,0!",  label="Hardware", width=6];
+    svd   [color="palegreen4",   pos="0,0.5!",   label="SVD bindings"];
+    llv   [color="palegreen3",   pos="0,1!",     label="Low-Level Drivers"];
+    hal   [color="tomato2",      pos="0,1.5!",   label="Hardware Abstraction Layer"];
+    comps [color="tomato2",      pos="-1.25,2!", label="Components", width=2.3];
+    mid   [color="tomato2",      pos="1.25,2!",  label="Middleware", width=2.3];
+    RTS   [color="deepskyblue3", pos="-3.05,1.25!", label="Run-time", width=1.05, height=2];
+
+    app   [color="powderblue",   pos="-0.6,2.5!",  label="Application", width=6];
+}

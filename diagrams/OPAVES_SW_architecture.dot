@@ -1,0 +1,37 @@
+digraph {
+    bgcolor=transparent
+    layout=neato
+
+    node        [shape=box, style="rounded,filled"]
+
+    pilot       [color="lightskyblue",   pos="0,0!",    label="Pilot"];
+    coms        [color="indianred",      pos="0,-1!",   label="Communication"];
+    database    [color="indianred",      pos="2,0!",    label="Shared values\nand parameters\ndatabase"];
+    adas        [color="indianred",      pos="2,-1!",   label="ADAS"];
+    control     [color="indianred",      pos="2,-2!",   label="Control\n(ABS, TCS)"];
+    collision   [color="indianred",      pos="4,0!",    label="Collision\nPrediction"];
+    slam        [color="indianred",      pos="4,-1!",   label="SLAM?"];
+    acquisition [color="indianred",      pos="4,-2!",   label="Sensors\nAcquisition"];
+    steering    [color="lightsteelblue", pos="1.5,-3!", label="Steering"];
+    motor       [color="lightsteelblue", pos="2.5,-3!", label="Motors"];
+    sensors     [color="lightsteelblue", pos="5.5,-2!",   label="Sensors"];
+
+    edge [color=black]
+
+    pilot -> coms [dir=both]
+
+    coms -> database [dir=both]
+
+    database -> adas
+    adas -> control
+
+    control -> steering
+    control -> motor
+
+    sensors -> acquisition
+    acquisition -> slam
+    acquisition -> database
+
+    slam -> collision
+    collision -> database
+}

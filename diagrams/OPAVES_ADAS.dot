@@ -1,0 +1,31 @@
+digraph {
+    bgcolor=transparent
+    layout=neato
+
+    node    [shape=box, style="rounded,filled", color=dodgerblue3, fontcolor=white]
+
+    pilot   [pos="0,0!",  width=1.5, label="Auto-Pilot"];
+    adas    [pos="0,-1!", width=1.5, label="ADAS"];
+    vehicle [pos="0,-2!", width=1.5, label="Vehicle"];
+
+    opaves  [pos="-1.7,-1!", label="O'PAVES", fontcolor=black, style="", shape=plaintext];
+
+    //  Define hidden nodes
+    node [label="", shape=plaintext, width=0.01, height=0.01, style=""];
+
+    hidden1 [pos="-0.75,-0.2!"];
+    hidden2 [pos="-1.2,-0.2!"];
+    hidden3 [pos="-0.75,-2.2!"];
+    hidden4 [pos="-1.2,-2.2!"];
+
+    edge [color=black]
+
+    pilot -> adas[dir=both]
+    adas -> vehicle [dir=both]
+
+    hidden1 -> hidden2[dir=none]
+    hidden3 -> hidden4[dir=none]
+    hidden4 -> hidden2[dir=both]
+}
+
+
