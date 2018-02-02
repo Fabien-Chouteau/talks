@@ -337,7 +337,7 @@ A.K.A There's a mini-RTOS in my languge^[blog.adacore.com/theres-a-mini-rtos-in-
     - Synchronization between tasks
     - Interrupt handling
  
-## Taks ##
+## Task ##
 
 ``` {.ada}
 task body My_Task is
@@ -542,7 +542,7 @@ TODOs:
  - Basic out of the box support of all the Cortex-M devices
  - Linux GPIO/I2C/SPI support (on the Raspberry Pi for instance)
  - AVR platform
- - More components drivers
+ - More component drivers
  - USB stack and drivers on the STM32
  - Bluetooth Low Energy stack on the Micro:Bit
 

@@ -84,7 +84,7 @@ __Open Platform for Autonomous VEhicleS (O'PAVES)__
 
 ## First Prototype ##
 
-![](images/OPAVSE_Mk-I.jpg)
+![](images/OPAVES_Mk-I.jpg)
 
 ## First prototype vs requirements ##
 
@@ -97,7 +97,7 @@ __Open Platform for Autonomous VEhicleS (O'PAVES)__
 \columnsbegin
 \column{.45\textwidth}
 
-![](images/OPAVSE_Mk-I.jpg)
+![](images/OPAVES_Mk-I.jpg)
 
 \column{.1\textwidth}
 
@@ -109,13 +109,17 @@ __Open Platform for Autonomous VEhicleS (O'PAVES)__
 
 \columnsend
 
+## New Version ##
+
+![](images/OPAVES_Mk-II.jpg)
+
 ## Open-Source Hardware ##
 
  * Released under the CERN Open Hardware License
  * Designed with open-source software:
     * KiCad
     * FreeCAD
- * Public repo: https://github.com/AdaCore/OPAVES
+ * Repository: https://github.com/AdaCore/OPAVES
 
 ![](images/kicad_render.png)
 
@@ -139,11 +143,11 @@ __Open Platform for Autonomous VEhicleS (O'PAVES)__
 
 ## Costs ##
 
-|                 |              | 
-|:----------------|-------------:| 
-| PCB (by 10)     |         ~$50 | 
-| Misc Components |        ~$110 | 
-| Crazyflie 2.0   |         $180 | 
+|                 |              |
+|:----------------|-------------:|
+| PCB (by 10)     |         ~$50 |
+| Misc Components |        ~$110 |
+| Crazyflie 2.0   |         $180 |
 | __Total__       |        ~$380^[That's less than a Tesla] |
 
 ## Fork it, Build it, Use it, Improve it ##
@@ -152,10 +156,10 @@ Build it and make your own autonomous car!
 
 Potential improvements:
 
- - Hardware 
+ - Hardware
     - Encoders on the motors
     - Change the PCB to make it compatible with your favorite dev board
- - Software 
+ - Software
     - Active differential
     - Actually use the sensors available
 
