@@ -33,12 +33,13 @@ Every bug costs more:
  - More time to investigate
  - More time to try a fix
  - Potential destruction of hardware
- - Potential injuries or death
+ - Updates are difficult
 
 You need more control:
 
  - Low resources (RAM, flash, CPU)
  - Interaction with the hardware
+ - Real-Time constraints
 
 # Embedded Programming with Ada #
 
@@ -55,6 +56,19 @@ You need more control:
 \columnsend
 
 ## Servo motor example ##
+
+\columnsbegin
+\column{.20\textwidth}
+
+![](images/servo_motor.png)
+
+\column{.80\textwidth}
+
+![](diagrams/servo_pulses_error-dot.pdf)
+
+\columnsend
+
+## Servo motor example ##
 \columnsbegin
 \column{.20\textwidth}
 
@@ -62,7 +76,7 @@ You need more control:
 
 \column{.80\textwidth}
 
-![](diagrams/servo_pulses-dot.pdf)
+![](diagrams/servo_pulses_error-dot.pdf)
 
 \columnsend
 
@@ -75,9 +89,8 @@ procedure Set_Angle (Angle : Integer);
 ## Types ##
 
 ```{.ada}
-
---  Set desired angle for the servo motor.
---  
+--  Set desired angle for the servo motor
+--
 --  @param Angle: Desired rotation angle in degree.
 --  Please do not use a value above 90 or below -90!
 procedure Set_Angle (Angle : Integer);
@@ -87,14 +100,14 @@ procedure Set_Angle (Angle : Integer);
 
 ```{.ada}
 type Servo_Angle is range -90 .. 90;
---  Servo rotation angle in degree.
+--  Servo rotation angle in degree
 
 procedure Set_Angle (Angle : Servo_Angle);
 --  Set desired angle for the servo motor
 
 ```
 
-## Types ##
+## The compiler: GNAT ##
 
 ```{.ada}
 Set_Angle (100);
@@ -105,10 +118,77 @@ warning: value not in range of type "Servo_Angle"
 warning: "Constraint_Error" will be raised at run time
 ```
 
-## Debugging ##
+## The static analyzer: CodePeer ##
 
-Gdb catches the exception
+```{.ada}
+procedure Set_Angle_Double (X : Servo_Angle) is
+begin
+   Set_Angle (X * 2);
+end Set_Angle_Double;
 
+Set_Angle_Double (80);
+
+```
+servo_driver.adb:27:4: high: precondition (range check) failure on call to servo_driver.set_angle_double: requires X in -45..45```
+```
+
+## The formal proof: SPARK ##
+
+```
+Phase 1 of 2: generation of Global contracts ...
+servo_driver.adb:42:04: error in inlined body at line 23
+servo_driver.adb:42:04: value not in range of type
+   "Servo_Angle" defined at line 7
+servo_driver.adb:42:04: "Constraint_Error" would have
+   been raised at run time
+```
+
+## The debugger: Gdb ##
+
+```
+(gdb) catch exception
+Catchpoint 1: all Ada exceptions
+(gdb) run
+
+Catchpoint 1, CONSTRAINT_ERROR
+   (servo_driver.adb:23 overflow check failed)
+```
+
+## The code: Exception handling ##
+
+``` {.ada}
+procedure Set_Angle_Catch (X : Servo_Angle) is
+begin
+
+   Set_Angle (X * 2);
+
+exception
+
+   when Constraint_Error =>
+      Put_Line ("Well, that was close");
+
+end Set_Angle_Catch;
+```
+
+## Your last chance ##
+
+``` {.ada}
+
+procedure Last_Chance_Handler is
+begin
+
+   --  Oops, there's something wrong
+
+   Reset_The_Board;
+
+end Last_Chance_Handler;
+```
+
+## YOLO ##
+
+![](images/yolo.jpg)^[cyanide and happiness]
+
+<!---
 ## Types ##
 
 ```{.ada}
@@ -119,10 +199,15 @@ if Angle in Safe_Range then
 end if;
 
 ```
+-->
 
 ## Contracts ##
 
 ```{.ada}
+procedure Set_Angle (Angle : Servo_Angle)
+   with Pre => Initialized;
+--  Set desired angle for the servo motor
+
 function Initialized return Boolean;
 --  Return True if the driver is initialized
 
@@ -130,27 +215,28 @@ procedure Initialize
    with Post => Initialized;
 --  Initialize the servo motor driver
 
-procedure Set_Angle (Angle : Servo_Angle)
-   with Pre => Initialized;
---  Set desired angle for the servo motor
 ```
 
-## Misc. ##
+## Null access ##
 
 ```{.ada}
-
 procedure Plop (Ptr : not null Some_Pointer);
-
-procedure Read_Char (C : out Character);
 ```
 
 ## Hardware mapping ##
 
 ```{.ada}
+--  High level view of the type
 type Servo_Angle is range -90 .. 90
+
+--  Hardware representation of the type
   with Size      => 8,
        Alignment => 16;
 ```
+
+## Memory mapped registers ##
+
+![](diagrams/memory_layout-dot.pdf)
 
 ## Hardware mapping ##
 
@@ -158,65 +244,70 @@ type Servo_Angle is range -90 .. 90
 
 ## Hardware mapping ##
 
-``` {.ada}
-   --  Configuration of GPIO pins.
-   type PIN_CNF_Register is record
-      DIR            : PIN_CNF_DIR_Field   := Input;
-      INPUT          : PIN_CNF_INPUT_Field := Disconnect;
-      PULL           : PIN_CNF_PULL_Field  := Disabled;
-      Reserved_4_7   : HAL.UInt4           := 16#0#;
-      DRIVE          : PIN_CNF_DRIVE_Field := S0S1;
-      Reserved_11_15 : HAL.UInt5           := 16#0#;
-      SENSE          : PIN_CNF_SENSE_Field := Disabled;
-      Reserved_18_31 : HAL.UInt14          := 16#0#;
-   end record
-     with Volatile_Full_Access, Size => 32,
-          Bit_Order => System.Low_Order_First;
+``` {.c}
+#define SENSE_MASK     (0x30)
+#define SENSE_POS      (4)
+
+#define SENSE_DISABLED (0)
+#define SENSE_HIGH     (2)
+#define SENSE_LOW      (3)
+
+uint8_t *register = 0x80000100;
+
+// Clear Sense field
+*register &= ~SENSE_MASK;
+// Set sense value
+*register |= SENSE_DISABLED << SENSE_POS;
 ```
 
 ## Hardware mapping ##
 
 ``` {.ada}
-   for PIN_CNF_Register use record
-      DIR            at 0 range 0 .. 0;
-      INPUT          at 0 range 1 .. 1;
-      PULL           at 0 range 2 .. 3;
-      Reserved_4_7   at 0 range 4 .. 7;
-      DRIVE          at 0 range 8 .. 10;
-      Reserved_11_15 at 0 range 11 .. 15;
-      SENSE          at 0 range 16 .. 17;
-      Reserved_18_31 at 0 range 18 .. 31;
-   end record;
+--  High level view of the Sense field
+type Pin_Sense is
+  (Disabled,
+   High,
+   Low)
+  with Size => 2;
+
+--  Hardware representation of the Sense field
+for Pin_Sense use
+  (Disabled => 0,
+   High     => 2,
+   Low      => 3);
 ```
 
 ## Hardware mapping ##
 
 ``` {.ada}
-   --  Pin sensing mechanism.
-   type PIN_CNF_SENSE_Field is
-     (
-      --  Disabled.
-      Disabled,
-      --  Wakeup on high level.
-      High,
-      --  Wakeup on low level.
-      Low)
-     with Size => 2;
-   for PIN_CNF_SENSE_Field use
-     (Disabled => 0,
-      High => 2,
-      Low => 3);
+--  High level view of the register
+type IO_Register is record
+   Reserved_A : UInt4;
+   SENSE      : Pin_Sense;
+   Reserved_B : UInt2;
+end record;
+
+--  Hardware representation of the register
+for IO_Register use record
+   Reserved_A at 0 range 0 .. 3;
+   SENSE      at 0 range 4 .. 5;
+   Reserved_B at 0 range 6 .. 7;
+end record;
 ```
 
 ## Hardware mapping ##
 
 ``` {.ada}
-GPIO_Periph.PIN_CNF (4).SENSE := Disabled;
+Register : IO_Register
+  with Address => 16#8000_0100#;
 ```
 
-## SVD2Ada ##
+``` {.ada}
+Register.SENSE := Disabled;
+```
 
-Generates Ada hardware mapping from SVD description
+## SVD -> Ada ##
+
 
 ``` {.xml}
 <field>
@@ -231,46 +322,49 @@ Generates Ada hardware mapping from SVD description
     </enumeratedValue>
  [...]
 ```
+[github.com/AdaCore/svd2ada](https://github.com/AdaCore/svd2ada)
 
-## Misc. ##
-
-``` {.ada}
-48_815
-
-16#BEAF#
-
-2#1011_1110_1010_1111#
-
-5#3030230#
-```
-
-# Ravenscar Tasking #
-
-## Task ##
+## Ravenscar Tasking ##
 
 A.K.A There's a mini-RTOS in my languge^[blog.adacore.com/theres-a-mini-rtos-in-my-language]
 
+ - Tasks (threads)
+ - Time handling
+    - Clock
+    - Delays
+ - Protected Objects:
+    - Mutual exclusion
+    - Synchronization between tasks
+    - Interrupt handling
+ 
+## Taks ##
 
 ``` {.ada}
---  Task declaration
-task My_Task
- with Priority => 1;
-```
-
-``` {.ada}
---  Task implementation
 task body My_Task is
+   Next_Release : Time;
 begin
-   --  Do something cool here...
+   --  Set Initial release time
+   Next_Release := Clock + Milliseconds (100);
+
+   loop
+      --  Suspend My_Task
+      delay until Next_Release;
+
+      --  Compute the next release time
+      Next_Release := Next_Release + Milliseconds (100);
+      
+      --  Do something really cool at 10Hz...
+   end loop;
 end My_Task;
 ```
+<!---
 
 ## Synchronization 1/2 ##
 
 ``` {.ada}
 protected My_Protected_Object is
-   procedure Send_Signal;
    entry Wait_For_Signal;
+   procedure Send_Signal;
 private
    We_Have_A_Signal : Boolean := False;
 end My_Protected_Object;
@@ -281,15 +375,16 @@ end My_Protected_Object;
 ``` {.ada}
 protected body My_Protected_Object is
 
+   entry Wait_For_Signal when We_Have_A_Signal is
+   begin
+       We_Have_A_Signal := False;
+   end Wait_For_Signal;
+
    procedure Send_Signal is
    begin
        We_Have_A_Signal := True;
    end Send_Signal;
 
-   entry Wait_For_Signal when We_Have_A_Signal is
-   begin
-       We_Have_A_Signal := False;
-   end Wait_For_Signal;
 end My_Protected_Object;
 ```
 
@@ -305,31 +400,37 @@ private
    procedure UART_Interrupt_Handler
            with Attach_Handler => UART_Interrupt;
 
-   Received_Char  : Character := ASCII.NUL;
-   We_Have_A_Char : Boolean := False;
-end
+   Received_Character  : Character := ASCII.NUL;
+   We_Have_A_Character : Boolean := False;
+end;
 ```
 
-## Interrupt handling 1/2 ##
+## Interrupt handling 2/2 ##
 
 ``` {.ada}
 protected body My_Protected_Object is
 
    entry Get_Next_Character (C : out Character)
-     when We_Have_A_Char
+     when We_Have_A_Character
    is
    begin
-       C := Received_Char;
+       C := Received_Character;
        We_Have_A_Char := False;
    end Get_Next_Character;
 
    procedure UART_Interrupt_Handler is
    begin
-       Received_Char  := A_Character_From_UART_Device;
-       We_Have_A_Char := True;
+       Received_Character  := A_Character_From_UART_Device;
+       We_Have_A_Character := True;
    end UART_Interrupt_Handler;
-end
+end;
 ```
+-->
+
+<!---
+## Runtimes profiles ##
+
+![](diagrams/bb_runtimes-dot.pdf)
 
 ## Runtimes profiles ##
 
@@ -339,12 +440,13 @@ end
      - Tagged types (Object Oriented)
      - Contracts, run-time checks
    - Ravenscar Small FootPrint (SFP)
-     - ZFP + tasking
-     - Ravenscar tasking
+     - ZFP + Ravenscar tasking
    - Ravenscar Full
      - Ravenscar SFP + everything we can add
      - Exception propagation
      - Containers
+}
+-->
 
 # Making the Ada Drivers Library #
 
@@ -355,15 +457,15 @@ end
  - 100% Ada
  - Hosted on GitHub: [github.com/AdaCore/Ada_Drivers_Library](github.com/AdaCore/Ada_Drivers_Library)
 
-## Architecture ##
+## Components ##
 
-![](diagrams/ADL_architecture-dot.pdf)
+![](diagrams/adl_MCU_to_component-dot.pdf)
 
 ## Supported components ##
 
  - Audio DAC: SGTL5000, CS43L22, W8994
  - Camera: OV2640, OV7725
- - IO expander: MCP23XXX, STMPE1600 HT16K33
+ - IO expander: MCP23XXX, STMPE1600, HT16K33
  - Motion: AK8963, BNO055, L3GD20, LIS3DSH, MMA8653, MPU9250
  - Range: VL53L0X
  - LCD: ILI9341, OTM8009a, ST7735R, SSD1306
@@ -378,6 +480,10 @@ end
  - File System: FAT and ARM semi-hosting
  - Log utility
 
+## Architecture ##
+
+![](diagrams/ADL_architecture-dot.pdf)
+
 ## Supported platforms ##
 
 \columnsbegin
@@ -390,8 +496,6 @@ end
 ![](images/riscv_logo.png)
 
 \columnsend
-
-# Supported boards #
 
 ## STM32F405 Discovery (ARM Cortex-M4F) ##
 
@@ -433,75 +537,79 @@ end
 
 TODOs:
 
- - New build and configuration system (based on KConfig)
+ - New configuration and build system
  - More documentation
- - Out of the box support of all the Cortex-M devices
- 
-## Contribution ##
-
- - Linux GPIO/I2C/SPI support
+ - Basic out of the box support of all the Cortex-M devices
+ - Linux GPIO/I2C/SPI support (on the Raspberry Pi for instance)
  - AVR platform
- - Components drivers
+ - More components drivers
+ - USB stack and drivers on the STM32
+ - Bluetooth Low Energy stack on the Micro:Bit
 
 # Getting started demo #
-## Examples of projects from Me, AdaCore, MWAC ##
+
+## Download and install the tools: adacore.com/community ##
+
+![](images/adacore_download.png)
+
+## Download Ada Drivers Library ##
+
+![](images/adl_download.png)
+
+# Some projects using the Ada Drivers Library #
+
+## Crazyflie 2.0 Flight controller ##
+
+[blog.adacore.com/how-to-prevent-drone-crashes-using-spark](http://blog.adacore.com/how-to-prevent-drone-crashes-using-spark)
+![](images/crazyflie2.jpg)
+
+## CNC Controller ##
+
+[blog.adacore.com/make-with-ada-arm-cortex-m-cnc-controller](http://blog.adacore.com/make-with-ada-arm-cortex-m-cnc-controller)
+![](images/ADL_projects/CNC_controller.jpg)
+
+## Pendulum clock LED ##
+
+[blog.adacore.com/writing-on-air](http://blog.adacore.com/writing-on-air)
+![](images/ADL_projects/pendulum.jpg)
+
+## DIY instant camera ##
+
+[blog.adacore.com/make-with-ada-diy-instant-camera](http://blog.adacore.com/make-with-ada-diy-instant-camera)
+![](images/ADL_projects/DIY_instant_camera.jpg)
+
+## Wolf ##
+
+[github.com/lambourg/Ada_Bare_Metal_Demos](https://github.com/lambourg/Ada_Bare_Metal_Demos)
+![](images/ADL_projects/wolf.jpg)
+
+## Wee Noise Maker ##
+
+[github.com/Fabien-Chouteau/Wee-Noise-Maker](https://github.com/Fabien-Chouteau/Wee-Noise-Maker)
+![](images/ADL_projects/wnm.jpg)
 
 ## The Make with Ada Competition ##
 
-## Pandoc Examples##
+ - Embedded software project competition
+ - Open to everyone
+ - ~8000 euros in prize
+ - Stay tuned for the next edition (Twitter @adaprogrammers)
 
-Regular text size
+![](images/makewithada-logo.png)
 
-\tiny Jonathan Sarna, *American Judaism* (New Haven: Yale University
-Press, 2014)
+## 2016 Winner project (Stephane Carrez) ##
 
-\note{
-NOTES: This is a note page and you ought to be able to tell.
+[github.com/stcarrez/etherscope](https://github.com/stcarrez/etherscope)
+![](images/MWAC_projects/etherscope.jpg)
 
-}
+## 2017 Winner project (Jonas Attertun) ##
 
-## Slide with text and footnote
+[blog.adacore.com/make-with-ada-2017-brushless-dc-motor-controller](http://blog.adacore.com/make-with-ada-2017-brushless-dc-motor-controller)
+![](images/MWAC_projects/ada_motorcontrol_1.png)
 
-Surely this is true.^[Jane Doe, *Says It Here* (New York: Oxford
-University Press, 2050).]
+# What are you going to make? #
 
-\note{I am sure about this point.}
+## ##
 
-## This is a heading
-
-Regular text on a slide:
-
--   One
--   Two
--   Three
-
-## Incremental list
-
-Incremental list on a slide:
-
->-   One
->-   Two
->-   Three
-
-\note{
-More notes:
-
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
-tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
-vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd
-gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-
-}
-
-## Code example
-
-``` {.ada}
-procedure Test is
-begin
-   null;
-end Test;
-```
-
-\note{
-This might be easier in R or Ruby.
-}
+ * GitHub: [github.com/AdaCore/Ada_Drivers_Library](https://github.com/AdaCore/Ada_Drivers_Library)
+ * Twitter: @[AdaProgrammers](https://twitter.com/adaprogrammers)

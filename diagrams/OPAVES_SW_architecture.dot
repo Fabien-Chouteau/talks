@@ -8,8 +8,8 @@ digraph {
     coms        [color="indianred",      pos="0,-1!",   label="Communication"];
     database    [color="indianred",      pos="2,0!",    label="Shared values\nand parameters\ndatabase"];
     adas        [color="indianred",      pos="2,-1!",   label="ADAS"];
-    control     [color="indianred",      pos="2,-2!",   label="Control\n(ABS, TCS)"];
-    collision   [color="indianred",      pos="4,0!",    label="Collision\nPrediction"];
+    control     [color="indianred",      pos="2,-2!",   label="Control"];
+    collision   [color="indianred",      pos="4,0!",    label="Collision\nPrediction?"];
     slam        [color="indianred",      pos="4,-1!",   label="SLAM?"];
     acquisition [color="indianred",      pos="4,-2!",   label="Sensors\nAcquisition"];
     steering    [color="lightsteelblue", pos="1.5,-3!", label="Steering"];

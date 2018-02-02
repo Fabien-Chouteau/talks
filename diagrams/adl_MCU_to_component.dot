@@ -1,0 +1,17 @@
+digraph {
+    bgcolor=transparent
+    forcelabels=true
+    imagepath="diagrams/images"
+    layout=neato
+
+    node        [shape=plaintext, style="", imagescale=true, labelloc=b]
+
+    stm32     [pos="0,0!",    width=1, height=1, fixedsize=true, image="stm32.jpg", label=""];
+    range     [pos="3.2,0!",  width=1, height=1, fixedsize=true, image="range.jpg", label=""];
+
+    edge [color=black]
+
+    range -> stm32  [dir=both, label="I2C, SPI, UART, etc."]
+}
+
+

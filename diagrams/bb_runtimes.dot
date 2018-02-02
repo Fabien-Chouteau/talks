@@ -1,0 +1,9 @@
+digraph {
+    bgcolor=transparent
+    layout=neato
+
+    node  [shape=box, style="rounded,filled", color=black]
+    FULL  [fillcolor="azure3", pos="-3,0.75!",  label="Ravenscar Full\n\n\n\n\n", width=5, height=1.5];
+    SPU   [fillcolor="azure2", pos="-2.5,0.5!", label="Ravenscar Small FootPrint (SFP)\n\n\n", width=4, height=1];
+    ZFP   [fillcolor="azure1", pos="-2,0.25!",  label="Zero FootPrint (ZFP)", width=3, height=0.5];
+}

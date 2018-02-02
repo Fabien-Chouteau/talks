@@ -56,7 +56,8 @@ __Open Platform for Autonomous VEhicleS (O'PAVES)__
     * Researchers
     * Hobbyists/Hackers/Makers
  * OPAVES as an AdaCore tool demonstrator:
-    * The automotive industry
+    * Customers and prospects
+    * Trade shows visitor
 
 # Hardware #
 
@@ -133,8 +134,8 @@ __Open Platform for Autonomous VEhicleS (O'PAVES)__
  - Ada and SPARK: programming languages
  - Ada_Drivers_Library: Drivers for micro-controllers
  - Certyflie: Flight controller written in Ada and SPARK
- - GNATprove: formal proof
- - GNATcoverage: Source coverage analysis
+ - GNATprove: Formal proof of the the SPARK code
+ - GNATcoverage: Source coverage analysis (up to MCDC)
 
 ## Costs ##
 
@@ -143,22 +144,22 @@ __Open Platform for Autonomous VEhicleS (O'PAVES)__
 | PCB (by 10)     |         ~$50 | 
 | Misc Components |        ~$110 | 
 | Crazyflie 2.0   |         $180 | 
-| __Total__       |        ~$380 | 
-
-## What can you do with it? ##
-
- - Improve the 3D models
- - Change the PCB to make it compatible with your favorite dev board
+| __Total__       |        ~$380^[That's less than a Tesla] |
 
 ## Fork it, Build it, Use it, Improve it ##
 
- - Hardware TODOs
-    - test
- - Software TODOs
+Build it and make your own autonomous car!
+
+Potential improvements:
+
+ - Hardware 
+    - Encoders on the motors
+    - Change the PCB to make it compatible with your favorite dev board
+ - Software 
     - Active differential
     - Actually use the sensors available
 
-## Questions ##
+##
 
 Follow the project on:
 

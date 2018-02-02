@@ -10,10 +10,10 @@ digraph {
     bluetooth [pos="-2,0!",   width=1, height=1, fixedsize=true, image="RN4871.png", label="Bluetooth"];
     imu       [pos="-2,-1!",  width=1, height=1, fixedsize=true, image="BNO055.jpg", label="IMU"];
     range     [pos="-2,-2!",  width=1, height=1, fixedsize=true, image="range.jpg", label="Range (x5)"];
-    power     [pos="-1,-2!",  width=1, height=1, fixedsize=true, image="power.jpg", label="Power"];
-    bat       [pos="0.7,-2!", width=1, height=1, fixedsize=true, image="battery.jpg", label="Battery"];
-    motor     [pos="2,-2!",   width=1, height=1, fixedsize=true, image="motors.jpg", label="Motor(s)"];
-    encoder   [pos="2,-1!",   width=1, height=1, fixedsize=true, image="encoder.jpg", label="Encoder(s)"];
+    power     [pos="-0.5,-2!",  width=1, height=1, fixedsize=true, image="power.jpg", label="Power"];
+    bat       [pos="0.8,-2!", width=1, height=1, fixedsize=true, image="battery.jpg", label="Battery"];
+    motor     [pos="2,-1!",   width=1, height=1, fixedsize=true, image="motors.jpg", label="Motor(s)"];
+    # encoder   [pos="2,-1!",   width=1, height=1, fixedsize=true, image="encoder.jpg", label="Encoder(s)"];
     steering  [pos="2,0!",    width=1, height=1, fixedsize=true, image="servo.jpg", label="Steering"];
 
     edge [color=black]
@@ -26,7 +26,7 @@ digraph {
     bat -> power
     bat -> motor
     stm32 -> motor
-    encoder -> stm32
+    # encoder -> stm32
     stm32 -> steering
 
 }

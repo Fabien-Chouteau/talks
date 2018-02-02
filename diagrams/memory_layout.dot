@@ -1,0 +1,17 @@
+digraph registerdefinition{
+   layout=neato
+
+    node [shape=none];
+    as[label=<
+                 <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="1">
+                 <TR><TD width="100" height="50" fixedsize="true">Flash</TD></TR>
+                 <TR><TD width="100" height="50" fixedsize="true"></TD></TR>
+                 <TR><TD width="100" height="30" fixedsize="true">RAM</TD></TR>
+                 <TR><TD width="100" height="30" fixedsize="true"></TD></TR>
+                 <TR><TD width="100" height="40" fixedsize="true">Peripherals</TD></TR>
+                 <TR><TD width="100" height="20" fixedsize="true"></TD></TR>
+                 </TABLE>>, pos="0,0!"];
+
+     addr0[label="0x00000000", pos="1.3,1.5!"]
+     addr1[label="0xFFFFFFFF", pos="1.3,-1.5!"]
+}

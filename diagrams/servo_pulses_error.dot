@@ -1,0 +1,55 @@
+digraph {
+    bgcolor=transparent
+    layout=neato
+    // A -> Error pulse
+
+    //  The signals modes
+    node [label="", shape=plaintext, width=0.001, height=0.001, style=""];
+
+    A0  [pos="-0.5,0!"]
+    A1  [pos="0,0!"]
+    A1H [pos="0,-0.1!"]
+    A2  [pos="0,1!"]
+    A3  [pos="1.8,1!"]
+    A4  [pos="1.8,0!"]
+    A4H [pos="1.3,-0.1!"]
+    A5  [pos="3.3,0!"]
+    A6  [pos="3.3,1!"]
+    A7  [pos="4.8,1!"]
+    A8  [pos="4.8,0!"]
+    A9  [pos="5,0!"]
+
+    // Signal lenght labels
+    A_lab [label="2.5 ms", pos="0.4,-0.3!"]
+
+    //  The circles points
+    node [label="", shape=plaintext, width=0.001, height=0.001, style=""];
+
+    A_Center [pos="6,0.5!"]
+
+    A_End [pos="6.5,0.5!", xlabel="+90 &deg;"] // +90 degrees
+
+    // The circles
+    node [label="", shape=circle, width=1, height=1, style=""];
+    A_Circle [pos="6,0.5!"]
+
+    // The circles arrows
+    edge [color=black]
+    A_Center -> A_End
+
+    // The signals arrows
+    edge [color=black, dir=both, labelfloat=true]
+    A1H -> A4H
+
+    // The signals lines
+    edge [color=red, dir=none]
+    A0 -> A1
+    A1 -> A2
+    A2 -> A3
+    A3 -> A4
+    A4 -> A5
+    A5 -> A6
+    A6 -> A7
+    A7 -> A8
+    A8 -> A9
+}

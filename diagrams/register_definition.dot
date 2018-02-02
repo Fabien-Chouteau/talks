@@ -1,59 +1,6 @@
 digraph registerdefinition{
        node [shape=none];
-       reg1[label=<
-                 <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="1">
-                 <TR>
-                   <TD width="60" height="20" fixedsize="true">31</TD>
-                   <TD width="60" height="20" fixedsize="true">30</TD>
-                   <TD width="60" height="20" fixedsize="true">29</TD>
-                   <TD width="60" height="20" fixedsize="true">28</TD>
-                   <TD width="60" height="20" fixedsize="true">27</TD>
-                   <TD width="60" height="20" fixedsize="true">26</TD>
-                   <TD width="60" height="20" fixedsize="true">25</TD>
-                   <TD width="60" height="20" fixedsize="true">24</TD>
-                 </TR>
-                 <TR>
-                   <TD COLSPAN="8">Reserved</TD>
-                 </TR>
-                 </TABLE>>];
-
-        reg2[label=<
-                 <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="1">
-                 <TR>
-                   <TD width="60" height="20" fixedsize="true">23</TD>
-                   <TD width="60" height="20" fixedsize="true">22</TD>
-                   <TD width="60" height="20" fixedsize="true">21</TD>
-                   <TD width="60" height="20" fixedsize="true">20</TD>
-                   <TD width="60" height="20" fixedsize="true">19</TD>
-                   <TD width="60" height="20" fixedsize="true">18</TD>
-                   <TD width="60" height="20" fixedsize="true">17</TD>
-                   <TD width="60" height="20" fixedsize="true">16</TD>
-                 </TR>
-                 <TR>
-                   <TD COLSPAN="6">Reserved</TD>
-                   <TD COLSPAN="2">Sense</TD>
-                 </TR>
-                 </TABLE>>];
-
-       reg3[label=<
-                 <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="1">
-                 <TR>
-                   <TD width="60" height="20" fixedsize="true">15</TD>
-                   <TD width="60" height="20" fixedsize="true">14</TD>
-                   <TD width="60" height="20" fixedsize="true">13</TD>
-                   <TD width="60" height="20" fixedsize="true">12</TD>
-                   <TD width="60" height="20" fixedsize="true">11</TD>
-                   <TD width="60" height="20" fixedsize="true">10</TD>
-                   <TD width="60" height="20" fixedsize="true">9</TD>
-                   <TD width="60" height="20" fixedsize="true">8</TD>
-                 </TR>
-                 <TR>
-                   <TD COLSPAN="5">Reserved</TD>
-                   <TD COLSPAN="3">Drive</TD>
-                 </TR>
-                 </TABLE>>];
-
-       reg4[label=<
+       reg[label=<
                  <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" CELLPADDING="1">
                  <TR>
                    <TD width="60" height="20" fixedsize="true">7</TD>
@@ -66,9 +13,9 @@ digraph registerdefinition{
                    <TD width="60" height="20" fixedsize="true">0</TD>
                  </TR>
                  <TR>
+                   <TD COLSPAN="2">Reserved</TD>
+                   <TD COLSPAN="2">Sense</TD>
                    <TD COLSPAN="4">Reserved</TD>
-                   <TD COLSPAN="2">Pull</TD>
-                   <TD COLSPAN="2">Dir</TD>
                  </TR>
                  </TABLE>>];
 
@@ -80,8 +27,5 @@ digraph registerdefinition{
                  <TR><TD align="right">3:</TD>    <TD align="left">Sense for low level</TD></TR>
                  </TABLE>>];
 
-        reg1 -> reg2[style=invis];
-        reg2 -> reg3[style=invis];
-        reg3 -> reg4[style=invis];
-        reg4 -> cfg_def [style=invis];
+        reg -> cfg_def [style=invis];
 }
