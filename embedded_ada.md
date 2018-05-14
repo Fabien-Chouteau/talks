@@ -14,6 +14,25 @@ theme: metropolis
 
 # Ravenscar Tasking #
 
+## Runtimes profiles ##
+
+![](diagrams/bb_runtimes-dot.pdf)
+
+<!--
+## Runtimes profiles ##
+
+   - Zero FootPrint (ZFP)
+     - The bare minimum to program in Ada
+     - Static/compile time features of Ada
+     - Tagged types (Object Oriented)
+     - Contracts, run-time checks
+   - Ravenscar Small FootPrint (SFP)
+     - ZFP + Ravenscar tasking
+   - Ravenscar Full
+     - Ravenscar SFP + everything we can add
+     - Exception propagation
+     - Containers
+
 ## Ravenscar Tasking ##
 
 A.K.A There's a mini-RTOS in my languge^[blog.adacore.com/theres-a-mini-rtos-in-my-language]
@@ -26,6 +45,8 @@ A.K.A There's a mini-RTOS in my languge^[blog.adacore.com/theres-a-mini-rtos-in-
     - Mutual exclusion
     - Synchronization between tasks
     - Interrupt handling
+
+-->
 
 ## Tasks ##
 
@@ -147,27 +168,6 @@ protected body My_Protected_Object is
    end UART_Interrupt_Handler;
 end;
 ```
-
-## Runtimes profiles ##
-
-![](diagrams/bb_runtimes-dot.pdf)
-
-<!--
-## Runtimes profiles ##
-
-   - Zero FootPrint (ZFP)
-     - The bare minimum to program in Ada
-     - Static/compile time features of Ada
-     - Tagged types (Object Oriented)
-     - Contracts, run-time checks
-   - Ravenscar Small FootPrint (SFP)
-     - ZFP + Ravenscar tasking
-   - Ravenscar Full
-     - Ravenscar SFP + everything we can add
-     - Exception propagation
-     - Containers
-
--->
 
 # Hardware mapping #
 
@@ -377,7 +377,7 @@ void main(void) {
  - Embedded software project competition
  - Open to everyone
  - ~8000 euros in prize
- - [makewithada.org](makewithada.org (Twitter @adaprogrammers)
+ - [makewithada.org](makewithada.org) (Twitter @adaprogrammers)
 
 ![](images/makewithada-logo.png)
 
