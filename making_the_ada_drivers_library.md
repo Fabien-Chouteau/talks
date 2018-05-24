@@ -326,7 +326,7 @@ Register.SENSE := Disabled;
 
 ## Ravenscar Tasking ##
 
-A.K.A There's a mini-RTOS in my languge^[blog.adacore.com/theres-a-mini-rtos-in-my-language]
+A.K.A There's a mini-RTOS in my language^[blog.adacore.com/theres-a-mini-rtos-in-my-language]
 
  - Tasks (threads)
  - Time handling
