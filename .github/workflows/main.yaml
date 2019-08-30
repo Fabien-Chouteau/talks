@@ -8,7 +8,3 @@ jobs:
     - uses: actions/checkout@master
     - run: sudo apt install pandoc graphviz texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
     - run: make
-    - uses: actions/upload-artifact@master
-      with:
-        name: servo_pulses-dot.pdf
-        path: diagrams/servo_pulses-dot.pdf
