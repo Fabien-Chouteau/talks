@@ -1,0 +1,13 @@
+name: Build slides
+on: push
+jobs:
+  build:
+    name: Build slides
+    runs-on: ubuntu-latest    
+    steps:
+    - uses: actions/checkout@master
+    - run: make
+    - uses: actions/upload-artifact@master
+      with:
+        name: servo_pulses-dot.pdf
+        path: diagrams/servo_pulses-dot.pdf
