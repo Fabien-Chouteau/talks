@@ -6,6 +6,7 @@ jobs:
     runs-on: ubuntu-latest    
     steps:
     - uses: actions/checkout@master
+    - run: sudo apt install pandoc graphviz
     - run: make
     - uses: actions/upload-artifact@master
       with:
