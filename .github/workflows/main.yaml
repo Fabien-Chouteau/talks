@@ -1,0 +1,10 @@
+name: Build slides
+on: push
+jobs:
+  build:
+    name: Build slides
+    runs-on: ubuntu-latest    
+    steps:
+    - uses: actions/checkout@master
+    - run: sudo apt install pandoc graphviz texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
+    - run: make
