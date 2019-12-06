@@ -6,6 +6,7 @@ Repo for my talks (slides and code)
 | Date | Topic | Location |
 | ---- | ----- | -------- |
 |Feb 2|[Alternative languages for safe and secure RISC-V programming](https://github.com/Fabien-Chouteau/talks/blob/master/alternative_languages_for_safe_secure_RISCV.slides.pdf)|[FOSDEM, Brussels](https://fosdem.org/2019/schedule/event/riscvadaspark/)
+|Dec 10|[SPARK: You simply can't write better code](https://github.com/Fabien-Chouteau/talks/blob/master/SPARK_you_simply_cant_write_better_code.slides.pdf)|[Human Talks, Angers](https://humantalks.com/cities/angers)|
 
 ## 2018
 
