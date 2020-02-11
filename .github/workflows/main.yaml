@@ -1,5 +1,6 @@
 name: Build slides
-on: push
+on:
+  - pull_request
 jobs:
   build:
     name: Build slides
@@ -8,3 +9,9 @@ jobs:
     - uses: actions/checkout@master
     - run: sudo apt install pandoc graphviz texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
     - run: make
+    - name: misspell
+      uses: reviewdog/action-misspell@v1
+      with:
+        github_token: ${{ secrets.REVIEWDOG_TOKEN }}
+        locale: "US"
+        reporter: github-pr-review
