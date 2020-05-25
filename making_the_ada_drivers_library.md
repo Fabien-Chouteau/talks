@@ -11,6 +11,7 @@ github: Fabien-Chouteau
 hackaday: Fabien.C
 fontsize: 15pt
 theme: metropolis
+logo: images/adacore.png
 ...
 
 # Programming is all about communication #

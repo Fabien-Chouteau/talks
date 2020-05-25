@@ -10,6 +10,7 @@ github: Fabien-Chouteau
 hackaday: Fabien.C
 fontsize: 15pt
 theme: metropolis
+logo: images/adacore.png
 ...
 
 # What do I mean by "alternative"? #

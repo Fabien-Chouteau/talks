@@ -221,11 +221,13 @@ $endfor$
 $if(title)$
 \title{$title$}
 $endif$
+$if(logo)$
 \logo{%
-    \includegraphics[height=0.5cm,keepaspectratio]{images/adacore.png}%
+    \includegraphics[height=0.5cm,keepaspectratio]{$logo$}%
     \hspace{300pt}
     \vspace{-23pt}
 }
+$endif$
 
 $if(subtitle)$
 \subtitle{$subtitle$}
