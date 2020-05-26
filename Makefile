@@ -1,4 +1,4 @@
-SLIDES := $(patsubst %.md,%.slides.pdf,$(wildcard *.md))
+SLIDES := $(patsubst %.md,%.slides.pdf,$(wildcard slides/*.md))
 DIAGRAMS := $(patsubst %.dot,%-dot.pdf,$(wildcard diagrams/*.dot))
 TEMPLATE := ./beamer.template
 
