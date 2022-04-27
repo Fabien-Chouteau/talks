@@ -1,0 +1,93 @@
+digraph {
+  bgcolor=transparent
+  fontname="Helvetica,Arial,sans-serif"
+  node [fontname="Helvetica,Arial,sans-serif"]
+  edge [fontname="Helvetica,Arial,sans-serif"]
+  node [shape=box, colorscheme=set312, style=filled];
+
+  rankdir=LR
+
+  subgraph cluster_0 {
+    node [shape=box, colorscheme=set312, style=filled]
+    {
+        "Library" [color=5]
+        "Architecture" [color=3];
+        "MCU" [color=1];
+        "Board Support" [color=4];
+        "Application" [color=7];
+        "Application" -> "Board Support"[style=invis]; 
+        "Board Support" -> "MCU"[style=invis]; 
+        "MCU" -> "Architecture"[style=invis]; 
+        "Architecture" -> "Library"[style=invis]; 
+    }
+  }
+
+  # Libs
+  {
+    rank=same
+    node [color=5]
+    hal
+    usb_embedded
+    bbqueue
+    MIDI
+  }
+
+  # Arch
+  {
+    rank=same
+    node [color=3]
+    cortex_m 
+  }
+
+  # MCU
+  {
+    rank=same
+    node [color=1]
+    rp2040_hal
+    samd51_hal
+  }
+
+  # BSPs
+  {
+    rank=same;
+    node [color=4]
+    pico_bsp
+    pygamer_bsp
+    minisamd51_bsp
+  }
+
+  # Apps
+  {
+    rank=same;
+    node [color=7]
+    pico_examples
+    pico_keys
+    pico_hub
+    minisamd51_example
+    shoot_n_loot
+  }
+  cortex_m -> hal
+  rp2040_hal -> hal
+  rp2040_hal -> cortex_m
+  rp2040_hal -> usb_embedded
+  pico_bsp -> rp2040_hal
+
+  samd51_hal -> hal
+  samd51_hal -> cortex_m
+  samd51_hal -> usb_embedded
+
+  minisamd51_bsp -> samd51_hal
+  pygamer_bsp -> samd51_hal
+
+  pico_examples -> pico_bsp
+  pico_examples -> cortex_m
+  pico_keys -> pico_bsp
+  pico_hub -> pico_bsp
+  pico_hub -> MIDI
+  pico_keys -> MIDI
+
+  bbqueue -> MIDI
+
+  minisamd51_example -> minisamd51_bsp
+  shoot_n_loot -> pygamer_bsp
+}
