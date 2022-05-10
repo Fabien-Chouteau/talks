@@ -1,5 +1,11 @@
 # Talks
-Repo for my talks (slides and code)
+Repo for my some of public talks (slides and code)
+
+## 2022
+
+| Date | Topic | Location |
+| ---- | ----- | -------- |
+|April 27|[Embedded Ada/SPARK Programming in 2022 ](slides/embedded_ada_spark_in_2022.slides.pdf)|[Ada-Spain XIX Jornada Técnica](http://www.adaspain.org/jornadas/jtas-xix-info)
 
 ## 2020
 
