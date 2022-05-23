@@ -36,7 +36,15 @@ logo: images/adacore.png
    - Drivers
  - Libraries
 
-## Architecture of the crates
+## Architecture of crates
+
+![&nbsp;](diagrams/anatomy_embedded_project_in_alire-dot.pdf)
+
+## Crates in this tutorial
+
+ - nrf51_hal
+ - microbit_bsp
+ - my_application
 
 ## Create the `nrf51_hal` crate
 
@@ -45,18 +53,17 @@ $ alr init --lib nrf51_hal
 $ cd nrf51_hal
 ```
 
-## Add `cortex_m` dependency
+## Add useful dependencies
 
 ```console
 $ alr with cortex_m
+$ alr with hal
 ```
-## Add `gnat_arm_elf` dependency
+## Add `gnat_arm_elf` dependency (toolchain)
 
 ```console
 $ alr with gnat_arm_elf
 ```
-
-## Edit GPR file
 
 ## Create the `microbit_bsp` crate
 
@@ -82,32 +89,65 @@ That means without:
  - Linker script
  - Startup code (crt0.S)
 
-``` {.ada}
-```
-
-## Add device configuration in GPR file
-
-``` {.ada}
+```ada
+  for Target use "arm-elf";
+  for Runtime ("Ada") use "zfp-cortex-m0";
 ```
 
 ## Get and build startup-gen
 
+`startup-gen` generates startup files (crt0 and linker script) based on
+properties of the target device such as: architecture, memory layout, number of
+interrupts.
+
 ```console
+$ cd ..
 $ alr get --build startup_gen
+```
+
+## Add device configuration in GPR file
+
+``` ada
+package Device_Configuration is
+   for CPU_Name use "ARM Cortex-M0";
+   for Number_Of_Interrupts use "32";
+
+   for Memories use ("flash", "ram");
+
+   for Mem_Kind ("flash") use "rom";
+   for Address  ("flash") use "0x00000000";
+   for Size     ("flash") use "256K";
+
+   for Mem_Kind ("ram") use "ram";
+   for Address  ("ram") use "0x20000000";
+   for Size     ("ram") use "16K";
+
+   for Boot_Memory use "flash";
+end Device_Configuration;
 ```
 
 ## Use startup-gen generator
 
 ```console
-$ startup-gen -P microbit_bsb.gpr \
+$ cd microbit_bsp
+$ alr exec -- ../startup_gen_22.0.0_85f5a122/startup-gen \
+              -P microbit_bsp.gpr \
               -l src/link.ld \
               -s src/crt0.S
 ```
 
 ## Add crt0 + linker script in GPR file
 
+Add `Asm_CPP` language to build `crt0.S`:
 ```ada
+   for Languages use ("Ada", "Asm_CPP");
 ```
+
+Define a linker switch variable for the linker script:
+```ada
+   Linker_Switches := ("-T", Project'Project_dir & "/src/link.ld");
+```
+This variable will be used by the application.
 
 ## Create the my_application crate
 
@@ -124,6 +164,24 @@ $ alr with microbit_bsp --use=../microbit_bsp
 ```
 
 ## Configure GPR file
+
+```ada
+   -- [...]
+with "microbit_bsp.gpr";
+
+project My_Application is
+   -- [...]
+
+   for Runtime ("Ada") use MicroBit_BSP'Runtime ("Ada");
+   for Target use MicroBit_BSP'Target;
+
+   package Linker is
+      for Default_Switches ("Ada") use
+        MicroBit_BSP.Linker_Switches &
+        ("-Wl,--print-memory-usage",
+         "-Wl,--gc-sections");
+   end Linker;
+```
 
 ## Write hello-world
 
@@ -147,10 +205,11 @@ $ alr build
 ## Run hello-world on QEMU
 
 ```console
-$  qemu-system-arm -nographic -no-reboot \
-                   -semihosting -M microbit \
-                   -kernel bin/my_application
+$ qemu-system-arm -nographic -no-reboot \
+                  -semihosting -M microbit \
+                  -kernel bin/my_application
 ```
+
 # Peripheral Drivers
 
 ## Memory Mapped Registers
@@ -181,7 +240,7 @@ uint8_t *register = 0x80000100;
 
 ## Hardware Mapping
 
-``` {.ada}
+``` ada
 --  High level view of the Sense field
 type Pin_Sense is
   (Disabled,
@@ -198,7 +257,7 @@ for Pin_Sense use
 
 ## Hardware Mapping
 
-``` {.ada}
+``` ada
 --  High level view of the register
 type IO_Register is record
    Reserved_A : UInt4;
@@ -216,12 +275,12 @@ end record;
 
 ## Hardware Mapping
 
-``` {.ada}
+``` ada
 Register : IO_Register
   with Address => 16#8000_0100#;
 ```
 
-``` {.ada}
+``` ada
 Register.SENSE := Disabled;
 ```
 ## Mapping for the nRF51
@@ -252,5 +311,78 @@ Who wants to write all the representation clauses?
 ## Get and build svd2ada
 
 ```console
+$ cd ..
 $ alr get --build svd2ada
+```
+
+## Run SVD2Ada
+
+```console
+$ cd nrf51_hal
+$ ../svd2ada_0.1.0_6eb0b591/bin/svd2ada \
+     ../svd2ada_0.1.0_6eb0b591/CMSIS-SVD/Nordic/nrf51.svd \
+     --boolean \
+     -o src/ \
+     -p nRF51_SVD \
+     --base-types-package HAL \
+     --gen-uint-always
+```
+
+## Basic RNG driver spec: `src/nrf51_hal-rng.ads`
+```ada
+with HAL;
+package Nrf51_Hal.RNG is
+   function Read return HAL.UInt8;
+end Nrf51_Hal.RNG;
+```
+
+## Basic RNG driver body: `src/nrf51_hal-rng.adb`
+```ada
+with nRF51_SVD.RNG;
+package body Nrf51_Hal.RNG is
+   function Read return HAL.UInt8 is
+      use HAL;
+      use nRF51_SVD.RNG;
+   begin
+      RNG_Periph.EVENTS_VALRDY := 0; -- Clear event
+      RNG_Periph.TASKS_START := 1; -- Start generator
+
+      while RNG_Periph.EVENTS_VALRDY = 0 loop
+         null; -- Wait for value ready
+      end loop;
+
+      return RNG_Periph.VALUE.VALUE;
+   end Read;
+end Nrf51_Hal.RNG;
+```
+
+## Update Application to use RNG driver
+```ada
+with Ada.Text_IO;
+with Nrf51_Hal.RNG;
+
+procedure My_Application is
+begin
+
+   for X in 1 .. 10 loop
+      Ada.Text_IO.Put_Line ("Hello World!" &
+                              Nrf51_Hal.RNG.Read'Img);
+   end loop;
+end My_Application;
+```
+
+## Build again
+
+```console
+$ cd ..
+$ cd my_application
+$ alr build
+```
+
+## Run on QEMU
+
+```console
+$ qemu-system-arm -nographic -no-reboot \
+                  -semihosting -M microbit \
+                  -kernel bin/my_application
 ```
