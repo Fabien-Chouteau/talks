@@ -55,8 +55,8 @@ $ cd nrf51_hal
 
 ## Add useful dependencies
 
+<!-- $ alr with cortex_m -->
 ```console
-$ alr with cortex_m
 $ alr with hal
 ```
 ## Add `gnat_arm_elf` dependency (toolchain)
@@ -386,3 +386,11 @@ $ qemu-system-arm -nographic -no-reboot \
                   -semihosting -M microbit \
                   -kernel bin/my_application
 ```
+
+## Slides and cheat codes
+
+ - https://github.com/Fabien-Chouteau/talks
+ - https://github.com/Fabien-Chouteau/talks/code_examples/embedded_with_alire/
+   ```console
+   $ bash -x setup.sh
+   ```

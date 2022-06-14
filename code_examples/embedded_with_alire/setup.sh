@@ -2,7 +2,7 @@
 
 alr -n init --lib nrf51_hal
 cd nrf51_hal
-alr -n with cortex_m
+# alr -n with cortex_m
 alr -n with hal
 alr -n with gnat_arm_elf
 cd ..
