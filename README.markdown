@@ -7,6 +7,7 @@ Repo for my some of public talks (slides and code)
 | ---- | ----- | -------- |
 |April 27|[Embedded Ada/SPARK Programming in 2022 ](slides/embedded_ada_spark_in_2022.slides.pdf)|[Ada-Spain XIX Jornada Técnica](http://www.adaspain.org/jornadas/jtas-xix-info)
 |June 14|[Embedded Ada with Alire](slides/embedded_ada_with_alire.slides.pdf)|[26th Ada-Europe International Conference](http://www.ada-europe.org/conference2022/)
+|June 16|[2022 AdaCore Tech Update](slides/Ada-Europe%202022%20AdaCore%20Tech%20Update.pdf)|[26th Ada-Europe International Conference](http://www.ada-europe.org/conference2022/)
 
 ## 2020
 
