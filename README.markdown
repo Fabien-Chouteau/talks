@@ -1,6 +1,12 @@
 # Talks
 Repo for my some of public talks (slides and code)
 
+## 2023
+
+| Date | Topic | Location |
+| ---- | ----- | -------- |
+|Feb 5|[Get Started With Open Source Formal Verification](slides/get_started_with_open_source_formal_verification.slides.pdf)|[FOSDEM, Brussels](https://fosdem.org/2023/schedule/event/open_source_formal_verification/)
+
 ## 2022
 
 | Date | Topic | Location |

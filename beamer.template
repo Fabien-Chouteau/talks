@@ -246,6 +246,10 @@ $if(twitter)$
   \includegraphics[height=0.25cm,keepaspectratio]{images/Twitter_Logo_Blue.png}
   & Twitter  & \href{https://twitter.com/$twitter$}{@$twitter$}\\
 $endif$
+$if(mastodon)$
+  \includegraphics[height=0.25cm,keepaspectratio]{images/mastodon_logo.png}
+  & Mastodon & \href{$mastodon_link$}{$mastodon$}\\
+$endif$
 $if(github)$
   \includegraphics[height=0.25cm,keepaspectratio]{images/GitHub-Mark-120px-plus.png}
   & GitHub & \href{https://github.com/$github$}{$github$}\\

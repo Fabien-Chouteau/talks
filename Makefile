@@ -8,7 +8,8 @@ HIGHLIGHT_STYLE=pygments
 PANDOC_OPTS := -t beamer --template=$(TEMPLATE)\
 	--slide-level 2 -V monofont="DejaVu Sans Mono" \
 	-V monofontoptions=Scale=0.9 \
-	--highlight-style=$(HIGHLIGHT_STYLE)
+	--highlight-style=$(HIGHLIGHT_STYLE) \
+        --syntax-definition=console_highlight.xml
 
 all : $(SLIDES) $(HANDOUTS)
 
