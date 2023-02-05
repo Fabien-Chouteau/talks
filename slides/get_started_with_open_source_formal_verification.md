@@ -231,10 +231,7 @@ That's it you just proved your first program!
 
 ## Resources
 
- - [learn.adacore.com](https://learn.adacore.com): interactive learning website
- - [reddit.com/r/ada](https://reddit.com/r/ada)
- - [forum.ada-lang.io](https://forum.ada-lang.io)
- - [gitter.im/ada-lang/](https://gitter.im/ada-lang/)
+![](images/learn_spark_screenshot.png)
 
 ## The answer
 
