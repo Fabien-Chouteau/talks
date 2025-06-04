@@ -1,0 +1,21 @@
+digraph {
+    bgcolor=transparent
+
+    move_fwd     [label="Move\nForward"];
+    lookaround   [label="Look\nAround"];
+    turnleft     [label="Turn\nLeft"];
+    turnright    [label="Turn\nRight"];
+    turnaround   [label="Turn\nAround"];
+    
+    edge [color=black]
+
+    move_fwd -> lookaround [label="Obstacle\ndetected"]
+    lookaround -> turnleft  [label="No obstacle\nleft"]
+    lookaround -> turnright [label="No obstacle\nright"]
+    lookaround -> turnaround [label=""]
+
+    turnleft -> move_fwd
+    turnright -> move_fwd
+    turnaround -> move_fwd
+
+}
