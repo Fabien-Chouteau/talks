@@ -114,10 +114,9 @@ $endif$
 \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},fontsize=\footnotesize}
 
 % Define the background color of code blocks
-
+\definecolor{shadecolor}{rgb}{0.81 0.85 0.85}
 \ifcsmacro{Shaded}{
   \usepackage{framed}
-  \definecolor{shadecolor}{rgb}{0.81 0.85 0.85}
   \renewenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
 }{}
 
@@ -179,6 +178,13 @@ $if(section-titles)$
   \frame{\subsectionpage}
 }
 $endif$
+
+\usepackage{tcolorbox}
+\usepackage{etoolbox}
+\BeforeBeginEnvironment{quote}{\begin{tcolorbox}[boxrule=0.5pt,%
+                                                 colback=shadecolor,%
+						 colframe=mLightBrown]}
+\AfterEndEnvironment{quote}{\end{tcolorbox}}
 
 $if(links-as-notes)$
 % Make links footnotes instead of hotlinks:

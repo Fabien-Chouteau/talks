@@ -6,6 +6,7 @@ Repo for my some of public talks (slides and code)
 | Date | Topic | Location |
 | ---- | ----- | -------- |
 |Jun 13|[Making the Mars Rover Demo](slides/making_the_mars_rover_demo.slides.pdf)|[Ada Developers Workshop, Paris](https://www.ada-europe.org/conference2025/workshop_adadev.html)
+|Jun 13|[Property-Based Testing in Ada](slides/property_based_testing_in_ada.slides.pdf)|[Ada Developers Workshop, Paris](https://www.ada-europe.org/conference2025/workshop_adadev.html)
 
 ## 2023
 

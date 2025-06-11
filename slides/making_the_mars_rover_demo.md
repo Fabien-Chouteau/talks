@@ -124,8 +124,8 @@ logo: images/adacore.png
 :::
 
 
-## Implementation: 
- 
+# Implementation
+
 ## SPARKify
 
 ```ada

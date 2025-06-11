@@ -1,0 +1,18 @@
+digraph {
+    bgcolor=transparent
+    node [shape=box]
+
+    a [label="Unsigned_8"]
+    b [label="Definite Array"]
+    c [label="Enum"]
+    d [label="Tuple"]
+    e [label="Vector"]
+
+    edge [color=black]
+
+    a -> b
+    b -> d
+    c -> d
+    d -> e
+
+}
